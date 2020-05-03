@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import ListPage from './components/ListPage';
+import DetailsPage from './components/DetailsPage';
+import NotFoundPage from './components/404';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class ExchangeRateApp extends React.Component {
+  state = {
+    username: 'bubu'
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header>
+          <Header username={this.state.username}/>
+        </header>
+        Belépés
+      </div>
+    );
+  }
 }
+Header.defaultProps = {
+  title: 'Exchange Rate App'
+};
 
-export default App;
+export default ExchangeRateApp;
