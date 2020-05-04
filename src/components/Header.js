@@ -10,7 +10,7 @@ class Header extends React.Component {
 
   userout = () => {
     fakeAuth.loggedIn = false;
-    localStorage.clear();
+    localStorage.removeItem('username');
 
   }
 

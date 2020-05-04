@@ -11,7 +11,7 @@ export const fakeAuth = {
 
 const RequireAuth = ({ children }) => {
   if (!fakeAuth.loggedIn) {
-    return <Redirect to={"/"} />;
+    return <Redirect to={"/list"} />;
   }
 
   return children;
@@ -20,7 +20,7 @@ const RequireAuth = ({ children }) => {
 const AppRouter = () => (
   <Switch>
     <Route exact path={"/list"} component={ListPage} />
-    <Route exact path={"/"} component={App} />
+    <Route exact path={"/"} component={ListPage} />
     <RequireAuth>
       <Route exact path={"/list"} component={ListPage} />
     </RequireAuth>
