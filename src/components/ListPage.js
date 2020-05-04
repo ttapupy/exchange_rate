@@ -1,11 +1,18 @@
 import React from 'react';
+import Header from './Header';
 
-const ListPage = (props) => {
-  return (
-    <div>
+class ListPage extends React.Component {
+
+
+  render() {
+    return (
+      <div>
+        <Header />
       Lista
-    </div>
-  );
+      </div>
+    );
+  }
+
 }
 
 export default ListPage;

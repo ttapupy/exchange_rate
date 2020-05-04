@@ -1,14 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import AppRouter from './AppRouter';
+import Header from './components/Header';
+import AppRouter from "./Router";
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter as Router } from "react-router-dom";
+
+const App = () => {
+  return (
+    <div className="App">
+      <Router>
+        <Header />
+        <AppRouter />
+      </Router>
+    </div>
+  );
+};
 
 ReactDOM.render(
   // <React.StrictMode>
   //   <ExchangerateApp />
   // </React.StrictMode>,
-  <AppRouter />,
+  <App />,
   document.getElementById('root')
 );
 
