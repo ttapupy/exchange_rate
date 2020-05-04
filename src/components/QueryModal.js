@@ -1,15 +1,20 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-const QueryModal = (props) => (
-  <Modal
-    // isOpen={}
-    // onRequestClose={}
-  >
-    <h3>New Query</h3>
-    {/* {} */}
-    {/* <button onClick={}>Close</button> */}
-  </Modal>
-);
+
+const QueryModal = ({ handleClose, show }) => {
+  const showHide = show ? "modal display-block" : "modal display-none";
+ 
+  return (
+    <div className={showHide}>
+      <Modal className="modal-main" isOpen={show} onRequestClose={handleClose} >
+      <h3>vajon mi?</h3>
+        <button onClick={handleClose}>close</button>
+      </Modal>
+    </div>
+  );
+
+};
+
 
 export default QueryModal;

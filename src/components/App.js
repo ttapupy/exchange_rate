@@ -3,6 +3,7 @@ import '../App.css';
 import Header from './Header';
 import Login from './Login';
 
+
 class App extends React.Component {
   state = {
     uname: undefined
@@ -10,15 +11,22 @@ class App extends React.Component {
 
   onLogin = (loginResult) => {
     this.setState({ uname: loginResult });
-    console.log(this.state); 
+    
   }
 
+  // componentDidUpdate() {
+  //   console.log(this.state.uname);
+  //   this.render();
+  // }
+
   render() {
-    console.log(this.state.uname);
-    return <div>
+
+    return (
+    <div>
       <Header uname={this.state.uname} />
       <Login onLogin={this.onLogin} />
-    </div>;
+    </div>
+    );
   }
 }
 

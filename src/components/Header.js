@@ -19,6 +19,7 @@ class Header extends React.Component {
     if (!fakeAuth.loggedIn) {
       return <Redirect to={"/"} />;
     }
+    console.log(this.props.uname);
   return (
     <div>
       <h1>Exchange Rate App</h1>
