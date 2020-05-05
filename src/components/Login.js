@@ -1,8 +1,5 @@
 import React from 'react';
 import '../App.css';
-import { Redirect } from "react-router-dom";
-import { fakeAuth } from "../Router";
-
 
 
 class Login extends React.Component {
@@ -14,12 +11,8 @@ class Login extends React.Component {
   handleLogin = (e) => {
     e.preventDefault();
     const username = e.target.elements.username.value.trim();
-    const json = JSON.stringify(username);
-    localStorage.setItem('username', json);  
-    console.log(username); 
-    console.log(this.state); 
-    this.props.onLogin({ uname: username });
-    fakeAuth.loggedIn = true ;
+    localStorage.setItem('username', username);
+    this.props.onLogin(username);
 
   };
 
@@ -30,12 +23,10 @@ class Login extends React.Component {
   }
 
   render() {
-    if (fakeAuth.loggedIn) {
-      return <Redirect to={"/list"} />;
-    }
+
     return (
-      <div className="App">
-        Belépés
+      <div>
+        Login
         <div>
           <form onSubmit={this.handleLogin}>
             <input type="text" name="username" 

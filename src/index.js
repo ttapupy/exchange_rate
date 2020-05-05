@@ -1,19 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './components/App';
 import './index.css';
-import AppRouter from "./Router";
+import './assets/css/sb-admin-2.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router } from "react-router-dom";
 
-const App = () => {
-  return (
-    <div className="App">
-      <Router>
-        <AppRouter />
-      </Router>
-    </div>
-  );
-};
 
 ReactDOM.render(
   <React.StrictMode>

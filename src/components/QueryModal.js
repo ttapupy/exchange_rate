@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import DetailsPage from './DetailsPage';
+import Button from 'react-bootstrap/Button';
 
 class QueryModal extends React.Component {
 
@@ -10,7 +11,8 @@ class QueryModal extends React.Component {
     currencies: [],
     currNames: {},
     base: "",
-    goal: ""
+    goal: "",
+    result: undefined
   }
 
 
@@ -27,14 +29,16 @@ class QueryModal extends React.Component {
   };
 
   getRates = (base, goal) => {
-    console.log(this.state);
     axios.get(`https://api.frankfurter.app/latest?amount=1&from=${base}&to=${goal}`)
       .then(res => {
         const base = res.data.base
         const date = res.data.date
-        const rates = JSON.stringify(res.data.rates);
-        console.log("3: ", base, date, rates);
-        this.props.saveResult(base, date, rates);
+        const temp = res.data.rates
+        const rate = temp[Object.keys(temp)[0]];
+        const goal = [Object.keys(temp)[0]];
+        const result = "  1 ".concat(base, " = ", rate, " ", goal);
+        this.setState({result: result});
+        this.props.saveResult(date, base, goal, rate);
       })
       .catch(err => console.log(err));
   };
@@ -54,32 +58,36 @@ class QueryModal extends React.Component {
  
   render() {
   return (
-    <div className={this.props.showHide}>
-      <Modal className="modal-main" isOpen={this.props.openModal} onRequestClose={this.props.hideModal} >
+    <div>
+      <Modal className="mymodal" overlayClassName="myoverlay" isOpen={this.props.openModal} onRequestClose={this.props.hideModal} >
       <h3>vajon mi?</h3>
       <div>
           <div>
             <span>Select Base: </span>
-            <select name="inputcurrency" autoFocus onChange={this.handleChangeBase}>
+            <select className="dropdown-header" name="inputcurrency" autoFocus onChange={this.handleChangeBase}>
               <option>
                 From
           </option>
               {this.state.currencies.map((c, index) => (this.DropDown(c, index)))}
             </select>
+            <br />
             <span>Select Goal: </span>
-            <select name="outputcurrency" autoFocus onChange={this.handleChangeGoal}>
+            <select className="dropdown-header" name="outputcurrency" autoFocus onChange={this.handleChangeGoal}>
               <option>
                 To
           </option>
               {this.state.currencies.map((c, index) => (this.DropDown(c, index)))}
-            </select>
-            <button onClick={() => this.getRates(this.state.base, this.state.goal)}>Get Rate</button>
+            </select> 
+            <br />
+            <p><span>  {this.state.result} </span></p>
+            
+            <Button onClick={() => this.getRates(this.state.base, this.state.goal)}>Get Rate</Button>
           </div>
           <div id='result'>
-
+          
           </div>
       </div>
-        <button onClick={this.props.hideModal}>close</button>
+        <button className="btn btn-outline-dark" onClick={this.props.hideModal}>close</button>
       </Modal>
     </div>
   );

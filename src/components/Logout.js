@@ -1,16 +1,12 @@
 import React from 'react';
 
-class Logout extends React.Component {
-
-  render() {
+const Logout = (props) => {
 
     return (
       <div>
-        <p><button onClick={this.props.userout} >Logout</button></p>
+        <p><button onClick={props.userout} >Logout</button></p>
       </div>
     );
   }
-
-}
 
 export default Logout;
