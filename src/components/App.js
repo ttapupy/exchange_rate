@@ -14,11 +14,6 @@ class App extends React.Component {
     
   }
 
-  // componentDidUpdate() {
-  //   console.log(this.state.uname);
-  //   this.render();
-  // }
-
   render() {
 
     return (
@@ -29,9 +24,5 @@ class App extends React.Component {
     );
   }
 }
-
-// Header.defaultProps = {
-//   title: 'Exchange Rate App'
-// };
 
 export default App;

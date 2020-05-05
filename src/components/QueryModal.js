@@ -4,16 +4,13 @@ import axios from 'axios';
 import DetailsPage from './DetailsPage';
 
 class QueryModal extends React.Component {
-  // ({ handleClose, show })
-  // const showHide = show ? "modal display-block" : "modal display-none";
 
   state = {
     
     currencies: [],
     currNames: {},
     base: "",
-    goal: "",
-    passQuery: {}
+    goal: ""
   }
 
 
@@ -22,8 +19,6 @@ class QueryModal extends React.Component {
       .then(res => {
         const currNames = res.data;
         const currencies = [...Object.keys(currNames)];
-        console.log('currencies', currencies)
-        // currencies.push(Object.keys(res.data.rates))
         this.setState({
           currencies: currencies, currNames: currNames
         });
@@ -38,14 +33,8 @@ class QueryModal extends React.Component {
         const base = res.data.base
         const date = res.data.date
         const rates = JSON.stringify(res.data.rates);
-
-        this.setState({
-          passQuery:  {base: [date, rates]}
-        });
-        console.log("mi ez?", this.state.passQuery);
-
-        localStorage.setItem(base, [date, rates]);
-        this.showResult();
+        console.log("3: ", base, date, rates);
+        this.props.saveResult(base, date, rates);
       })
       .catch(err => console.log(err));
   };
@@ -62,14 +51,10 @@ class QueryModal extends React.Component {
     this.setState({ goal: e.target.value });
   };
 
-
-  // componentDidUpdate = () => {
-  // };
  
   render() {
   return (
-    <div >
-      {/* className={showHide} */}
+    <div className={this.props.showHide}>
       <Modal className="modal-main" isOpen={this.props.openModal} onRequestClose={this.props.hideModal} >
       <h3>vajon mi?</h3>
       <div>

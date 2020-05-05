@@ -1,8 +1,7 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-
-import App from './components/App';
 import ListPage from './components/ListPage';
+import App from './components/App';
 
 
 export const fakeAuth = {
@@ -20,7 +19,7 @@ const RequireAuth = ({ children }) => {
 const AppRouter = () => (
   <Switch>
     <Route exact path={"/list"} component={ListPage} />
-    <Route exact path={"/"} component={ListPage} />
+    <Route exact path={"/"} component={App} />
     <RequireAuth>
       <Route exact path={"/list"} component={ListPage} />
     </RequireAuth>

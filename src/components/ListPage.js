@@ -1,104 +1,88 @@
 import React from 'react';
-import ReactDOM from "react-dom";
 import Header from './Header';
 import QueryModal from './QueryModal';
 import '../App.css';
-import axios from 'axios';
 import DetailsPage from './DetailsPage';
 
 class ListPage extends React.Component {
 
   state = {
     openModal: false,
-  //   currencies: [],
-  //   currNames: {},
-  //   value: "",
-  //   base: "",
-  //   goal: "",
-  //   rate: 0,
-  //   passQuery: {}
+    showHide: "modal display-none",
+    passQuery: {}
   }
   
 
   newSearch = () => {
-    this.setState(() => ({ openModal: true }));
+    this.setState(() => ({ openModal: true, showHide: "modal display-block" }));
   };
 
   hideModal = () => {
-    this.setState({ openModal: false });
+    this.setState({ openModal: false, showHide: "modal display-none" });
   };
 
-  // componentDidMount = () => {
-  //   axios.get("https://api.frankfurter.app/currencies")
-  //     .then(res => {
-  //       const currNames = res.data;
-  //       const currencies = [...Object.keys(currNames)];
-  //       console.log('currencies', currencies)
-  //       // currencies.push(Object.keys(res.data.rates))
-  //       this.setState({
-  //         currencies: currencies, currNames: currNames
-  //       });
-  //     })
-  //     .catch(err => console.log(err));
-  // };
+  saveResult = (base, date, rates) => {
+    this.setState({ passQuery: { base: [date, rates] } });
+    localStorage.setItem(base, [date, rates]);
+    console.log("mi ez?", this.state.passQuery);
+  };
 
-  // getRates = (base, goal) => {
-  //   console.log(this.state); 
-  //   axios.get(`https://api.frankfurter.app/latest?amount=1&from=${base}&to=${goal}`)
-  //     .then(res => {
-  //       this.setState({
-  //         passQuery: {base: res.data}
-  //       });
-  //       console.log("mi ez?", res.data);
-  //     })
-  //     .catch(err => console.log(err));
-  // };
+  renderTable() {
+    const data = {};
+    let keys = Object.keys(localStorage);
 
-  // DropDown = function (elem, index) {
-  //   return <option key={index} value={elem}>{elem}</option>;
-  // };
+    for (let key of keys) {
+      if ( key!== 'username') {
+      data[key] = localStorage.getItem(key);
+      }
+    }
+    return Object.entries(data).map((value, key) => {
+      const result = value[1];
+      const date = result.substring(0,10);
+      const to = result.substring(13,16);
+      const rate = result.substring(18, 24);
+    
+      return (
+        <tr key={key}>
+          <td>{date}</td>
+          <td>{value[0]}</td>
+          <td>{to}</td>
+          <td>{rate}</td>
 
-  // handleChangeBase = (e) => {
-  //   this.setState({ base: e.target.value });
-  // };
-
-  // handleChangeGoal = (e) => {
-  //   this.setState({ goal: e.target.value });
-  // };
+        </tr>
+      )
+    })
+  }
 
 
   render() {
-
-  //   return (
-  //     <div>
-  //       <span>Select Base: </span>
-  //       <select name="inputcurrency" autoFocus onChange={this.handleChangeBase}>
-  //         <option>
-  //           From
-  //         </option>
-  //         {this.state.currencies.map((c, index) => (this.DropDown(c, index)))}
-  //       </select>
-  //       <span>Select Goal: </span>
-  //       <select name="outputcurrency" autoFocus onChange={this.handleChangeGoal}>
-  //         <option>
-  //           To
-  //         </option>
-  //         {this.state.currencies.map((c, index) => (this.DropDown(c, index)))}
-  //       </select>
-  //       <button onClick={() => this.getRates(this.state.base, this.state.goal)}>Get Rate</button>
-  //     </div>
-  //   );
-  
     return (
       <div>
         <Header />
         <main>
           <p>New search</p>
-          <QueryModal openModal={this.state.openModal} hideModal={this.hideModal} />
+          <QueryModal openModal={this.state.openModal} hideModal={this.hideModal} showHide={this.state.showHide} passQuery={this.state.passQuery} 
+            saveResult={this.saveResult}
+          />
           <button type="button" onClick={this.newSearch}>open</button>
         </main>
         <br />
-        <div>Lista</div>
+        <div>
+          <h1 id='tableheader'>Previous Queries</h1>
+          <table id='results'>
+          <thead>
+          <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Rate</th>
+              </tr>
+          </thead>
+            <tbody>
+              {this.renderTable()}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   };
