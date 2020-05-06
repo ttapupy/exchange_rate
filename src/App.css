@@ -44,16 +44,33 @@
   right: 40px;
   bottom: 40px;
   width:40%;
-  height: 40%;
+  height: 60%;
   background-color: papayawhip;
 }
 
-.display-block {
-  display: block;
+.content {
+  border-style: hidden;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+  padding-top: 30px;
+  padding-right: 50px;
+  padding-bottom: 50px;
+  padding-left: 30px;
 }
 
-.display-none {
-  display: none;
+.content.modalis {
+  border: 1px solid rgb(113, 121, 104);;
+  border-radius: 40px;
+}
+
+.inner {
+  display: inline-block;
+  border-style: hidden;
+  padding-right: 40px;
+  margin-right: 40px;
+
 }
 
 .myoverlay {

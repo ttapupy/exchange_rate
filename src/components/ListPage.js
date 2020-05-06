@@ -1,7 +1,5 @@
 import React from 'react';
 import QueryModal from './QueryModal';
-import '../App.css';
-import DetailsPage from './DetailsPage';
 import Button from 'react-bootstrap/Button';
 
 class ListPage extends React.Component {
@@ -10,29 +8,26 @@ class ListPage extends React.Component {
     openModal: false,
     showHide: "modal display-none",
     passQuery: {},
-    elementChange: false
+    elementChange: false,
+    result: undefined
   }
-  
 
   newSearch = () => {
-    this.setState(() => ({ openModal: true, showHide: "modal display-block" }));
+    this.setState(() => ({ openModal: true }));
   };
 
   hideModal = () => {
-    this.setState({ openModal: false, showHide: "modal display-none" });
+    this.setState({ openModal: false, result: undefined });
   };
 
   saveResult = (date, base, goal, rate) => {
     this.setState({ passQuery:  [date, base, goal[0], rate]  });
     const res = [date, base, goal[0], JSON.stringify(rate)].join('|');
-    this.setState((prevState) => ({ elementChange: !prevState.elementChange }))
+    const result = "  1 ".concat(base, " = ", rate, " ", goal);
+    this.setState({result: result});
+    this.setState((prevState) => ({ elementChange: !prevState.elementChange }));
     localStorage.setItem(res, res);
     
-  };
-
-  detailShow = (elem) => {
-    // TODO
-    alert(elem);
   };
 
   removeEntry = (elem) => {
@@ -48,34 +43,45 @@ class ListPage extends React.Component {
     }
     return Object.values(data).map((value) => {
       const temp = value.split('|');
+      if (this.props.details) {
+        if ([this.props.detailsBase, this.props.detailsGoal].sort().join() !== [temp[1], temp[2]].sort().join()) {
+          return null;
+        }
+      }
       return (
+        
         <tr key={value}>
           <td>{temp[0]}</td>
           <td>{temp[1]}</td>
           <td>{temp[2]}</td>
           <td>{temp[3]}</td>
-          <td><button onClick={() => this.detailShow(value)}>details</button></td>
+          {!this.props.details ? (<td><button onClick={() => this.props.showDetails(temp[1], temp[2])}>filter</button></td>) : null}
           <td><button onClick={() => this.removeEntry(value)}>delete</button></td>
-
         </tr>
-      )
+      );
     })
   }
 
 
   render() {
+    const prev = this.props.details ? "History" : "Previous Queries";
     return (
       <div>
-        <main className="content-wrapper">
-          <p>New search</p>
-          <QueryModal openModal={this.state.openModal} hideModal={this.hideModal} showHide={this.state.showHide} passQuery={this.state.passQuery} 
-            saveResult={this.saveResult}
+        <main className="content">
+          <div> 
+          New search:
+          <QueryModal openModal={this.state.openModal} hideModal={this.hideModal} showHide={this.state.showHide} passQuery={this.state.passQuery} showDetails={this.props.showDetails} details={this.props.details}
+            saveResult={this.saveResult} result={this.state.result}
           />
           <Button type="button" onClick={this.newSearch}>open</Button>
-        </main>
+          </div>
+        
         <br />
         <div className="table-responsive">
-          <h1 id='tableheader'>Previous Queries</h1>
+        <div>
+          <h1 className="inner">{prev}</h1>
+          <div className="inner">{this.props.details ? (<button onClick={this.props.hideDetails} className="button bg-info">Back to all queries</button>) : null}</div>
+          </div>
           <table className="table table-bordered">
           <thead>
           <tr>
@@ -83,7 +89,7 @@ class ListPage extends React.Component {
             <th>From</th>
             <th>To</th>
             <th>Rate</th>
-            <th>Details</th>
+            {!this.props.details ? (<th>Filter Pair</th>) : null}
             <th>Delete</th>
               </tr>
           </thead>
@@ -92,6 +98,7 @@ class ListPage extends React.Component {
             </tbody>
           </table>
         </div>
+        </main>
       </div>
     );
   };

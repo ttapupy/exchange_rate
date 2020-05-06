@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
-import DetailsPage from './DetailsPage';
 import Button from 'react-bootstrap/Button';
 
 class QueryModal extends React.Component {
@@ -11,10 +10,8 @@ class QueryModal extends React.Component {
     currencies: [],
     currNames: {},
     base: "",
-    goal: "",
-    result: undefined
+    goal: ""
   }
-
 
   componentDidMount = () => {
     axios.get("https://api.frankfurter.app/currencies")
@@ -36,14 +33,13 @@ class QueryModal extends React.Component {
         const temp = res.data.rates
         const rate = temp[Object.keys(temp)[0]];
         const goal = [Object.keys(temp)[0]];
-        const result = "  1 ".concat(base, " = ", rate, " ", goal);
-        this.setState({result: result});
+        this.props.showDetails(base, goal);
         this.props.saveResult(date, base, goal, rate);
       })
       .catch(err => console.log(err));
   };
 
-  DropDown = function (elem, index) {
+  DropDown = (elem, index) => {
     return <option key={index} value={elem}>{elem}</option>;
   };
 
@@ -59,15 +55,15 @@ class QueryModal extends React.Component {
   render() {
   return (
     <div>
-      <Modal className="mymodal" overlayClassName="myoverlay" isOpen={this.props.openModal} onRequestClose={this.props.hideModal} >
-      <h3>vajon mi?</h3>
-      <div>
-          <div>
+      <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={this.props.openModal} onRequestClose={this.props.hideModal} >
+        <h3> How much is the fish? </h3>
+        <div>
+          <div className="inner">
             <span>Select Base: </span>
             <select className="dropdown-header" name="inputcurrency" autoFocus onChange={this.handleChangeBase}>
               <option>
                 From
-          </option>
+              </option>
               {this.state.currencies.map((c, index) => (this.DropDown(c, index)))}
             </select>
             <br />
@@ -75,24 +71,28 @@ class QueryModal extends React.Component {
             <select className="dropdown-header" name="outputcurrency" autoFocus onChange={this.handleChangeGoal}>
               <option>
                 To
-          </option>
+              </option>
               {this.state.currencies.map((c, index) => (this.DropDown(c, index)))}
-            </select> 
-            <br />
-            <p><span>  {this.state.result} </span></p>
-            
-            <Button onClick={() => this.getRates(this.state.base, this.state.goal)}>Get Rate</Button>
+            </select>
           </div>
-          <div id='result'>
-          
+          <div className="inner info">
+            {this.props.result}
           </div>
-      </div>
-        <button className="btn btn-outline-dark" onClick={this.props.hideModal}>close</button>
+          <p><br/></p>
+          <div>
+            <div className="inner">
+              <Button onClick={() => this.getRates(this.state.base, this.state.goal)}>Get Rate</Button>
+            </div>
+            <div className="inner">
+              <button className="btn btn-outline-dark" onClick={this.props.hideModal}>close</button>
+            </div>
+          </div>
+        </div>
       </Modal>
     </div>
   );
   }
 };
-
+Modal.setAppElement('body');
 
 export default QueryModal;

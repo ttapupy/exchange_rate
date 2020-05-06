@@ -25,9 +25,9 @@ class Login extends React.Component {
   render() {
 
     return (
-      <div>
-        Login
-        <div>
+      <div className="content">
+        <p>Login</p> <br/>
+        <div className="align-items-center justify-content-between mb-4">
           <form onSubmit={this.handleLogin}>
             <input type="text" name="username" 
               onChange={this.handleUname}
