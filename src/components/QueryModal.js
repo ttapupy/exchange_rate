@@ -75,7 +75,7 @@ class QueryModal extends React.Component {
               {this.state.currencies.map((c, index) => (this.DropDown(c, index)))}
             </select>
           </div>
-          <div className="inner info">
+          <div className="inner result">
             {this.props.result}
           </div>
           <p><br/></p>

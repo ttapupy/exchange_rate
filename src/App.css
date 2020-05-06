@@ -81,3 +81,9 @@
   bottom: 0;
   background-color: rgb(113, 121, 104);
 }
+
+.result {
+  font-weight: 500;
+  font-size: 1.25em;
+
+} 

@@ -21,7 +21,6 @@ class App extends React.Component {
 
   hideDetails = () => {
     this.setState({details: false});
-    console.log("called!");
   };
 
   componentDidMount() {

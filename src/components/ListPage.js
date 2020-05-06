@@ -37,8 +37,9 @@ class ListPage extends React.Component {
 
   renderTable() {
     const data = {};
-    let keys = Object.keys(localStorage).filter(function (value) { return value !== "username"; });
-    for (let key of keys) {
+    let keys = Object.keys(localStorage).filter(function (value, index, a) { return value !== "username" });
+    const keysOrdered = keys.sort().reverse();
+    for (let key of keysOrdered) {
       data[key] = localStorage.getItem(key);
     }
     return Object.values(data).map((value) => {
