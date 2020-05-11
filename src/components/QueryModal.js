@@ -16,7 +16,9 @@ class QueryModal extends React.Component {
     base: "",
     goal: "",
     rateDate: new Date(),
-    result: ""
+    result: "",
+    reversed: false,
+    reverseRate: ""
   }
 
   componentDidMount = () => {
@@ -39,8 +41,14 @@ class QueryModal extends React.Component {
         const temp = res.data.rates
         const rate = temp[Object.keys(temp)[0]];
         const goal = Object.keys(temp)[0];
-        const result = "  1 ".concat(base, " = ", rate, " ", goal);
-        this.setState({ result: result });
+        console.log(this.state.reversed);
+        if (this.state.reversed) {
+          const reverseRate = "  1 ".concat(base, " = ", rate, " ", goal);
+          this.setState({ reverseRate: reverseRate });
+        } else {
+          const result = "  1 ".concat(base, " = ", rate, " ", goal);
+          this.setState({ result: result });
+        }
         this.props.showDetails(base, goal);
         const rateState = { date: dateString, base, goal, rate };
         this.props.dispatch(addRate(rateState));
@@ -64,6 +72,17 @@ class QueryModal extends React.Component {
     this.setState({ rateDate: date });
   };
 
+  exchange = (base, goal) => {
+    this.setState({ reversed: false });
+    this.getRates(base, goal);
+  };
+
+  getReverseOrder = (base, goal) => {
+    const temp = base;
+    this.setState({ base: goal, goal: temp, reversed: true });
+    this.getRates(goal, base);
+  };
+
 
   render() {
     return (
@@ -83,6 +102,9 @@ class QueryModal extends React.Component {
               </div>
               <div className="inner">
                 <DatePicker
+                  todayButton="Today"
+                  showYearDropdown 
+                  showMonthDropdown 
                   selected={this.state.rateDate} onChange={this.setDate}
                   dateFormat="yyyy-MM-dd" />
               </div>
@@ -100,11 +122,17 @@ class QueryModal extends React.Component {
             </div>
             <div>
               <div className="inner">
-                <Button onClick={() => this.getRates(this.state.base, this.state.goal)}>Get Rate</Button>
+                <Button onClick={() => this.exchange(this.state.base, this.state.goal)}>Get Rate</Button>
               </div>
               <div className="inner">
                 <button className="btn btn-outline-dark" onClick={this.props.hideModal}>close</button>
               </div>
+            </div>
+            <br />
+            <div>{this.state.result ? (
+              <p><Button onClick={() => this.getReverseOrder(this.state.base, this.state.goal)}>Reverse Rate</Button></p>) : (<p><br /></p>)}
+            </div>
+            <div className=" reversed">{this.state.reversed ? (<p>{this.state.reverseRate}</p>) : (<p><br /></p>)}
             </div>
           </div>
         </Modal>

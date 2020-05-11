@@ -40,8 +40,7 @@ class App extends React.Component {
           </Switch>
         </BrowserRouter>
         <Header uname={this.state.uname} logout={this.logout}  details={this.state.details} />
-        <ListPage showDetails={this.showDetails} details={this.state.details} hideDetails={this.hideDetails} 
-        />
+        <ListPage />
       </div> 
        ) : (
       <div>
