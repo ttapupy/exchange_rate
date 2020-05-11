@@ -4,24 +4,16 @@ import '../assets/css/sb-admin-2.css';
 import Header from './Header';
 import Login from './Login';
 import ListPage from './ListPage';
+import { connect } from 'react-redux';
+import { setPairFilter } from '../actions/filters';
 import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
 
 
 class App extends React.Component {
   state = {
-    uname: undefined,
-    details: false,
-    detailsBase: undefined,
-    detailsGoal: undefined
+    uname: undefined
   }
 
-  showDetails = (base, goal) => {
-    this.setState({details: true, detailsBase:base, detailsGoal: goal});
-  };
-
-  hideDetails = () => {
-    this.setState({details: false});
-  };
 
   componentDidMount() {
     this.setState({uname: localStorage.getItem('username')});
@@ -29,11 +21,13 @@ class App extends React.Component {
 
   onLogin = (loginResult) => {
     this.setState({ uname: loginResult });
+    this.props.dispatch(setPairFilter('', ''));
   };
 
   logout = () => {
     this.setState({uname: undefined});
     localStorage.removeItem('username');
+
   };
 
   render() {
@@ -47,7 +41,7 @@ class App extends React.Component {
         </BrowserRouter>
         <Header uname={this.state.uname} logout={this.logout}  details={this.state.details} />
         <ListPage showDetails={this.showDetails} details={this.state.details} hideDetails={this.hideDetails} 
-          detailsBase={this.state.detailsBase} detailsGoal={this.state.detailsGoal} />
+        />
       </div> 
        ) : (
       <div>
@@ -63,4 +57,11 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    rates: state.rates,
+    filters: state.filters
+  }
+};
+
+export default connect(mapStateToProps)(App);
