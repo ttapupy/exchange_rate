@@ -15,13 +15,12 @@ function QueryModal(props) {
   const [result, setResult] = useState('')
   const [reversed, setReversed] = useState(false)
   const [reverseRate, setReverseRate] = useState('')
-  const [currFull, setCurrFull] = useState({})
+  const [currencies, setCurrencies] = useState({})
 
   useEffect(() => {
     axios.get("https://api.frankfurter.app/currencies")
       .then(res => {
-        const currObject = res.data
-        setCurrFull(currObject)
+        setCurrencies(res.data)
       })
       .catch(err => console.log(err))
   }, [])
@@ -45,8 +44,7 @@ function QueryModal(props) {
           setReversed(false)
         }
         props.showDetails(base, goal)
-        const rateState = { date: dateString, base, goal, rate }
-        props.dispatch(addRate(rateState))
+        props.dispatch(addRate({ date: dateString, base, goal, rate }))
       })
       .catch(err => console.log(err))
   }
@@ -68,7 +66,7 @@ function QueryModal(props) {
                 <option>
                   From
               </option>
-                {Object.entries(currFull).map((pair) => (dropDown(pair[1], pair[0])))}
+                {Object.entries(currencies).map((pair) => (dropDown(pair[1], pair[0])))}
               </select>
             </div>
             <div className="inner">
@@ -86,7 +84,7 @@ function QueryModal(props) {
             <option>
               To
               </option>
-            {Object.entries(currFull).map((pair) => (dropDown(pair[1], pair[0])))}
+            {Object.entries(currencies).map((pair) => (dropDown(pair[1], pair[0])))}
           </select>
           <p><br /></p>
           <div className=" result">{result ? (<p>{result}</p>) : (<p><br /></p>)}
