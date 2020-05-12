@@ -18,7 +18,6 @@ function QueryModal(props) {
   const [currFull, setCurrFull] = useState({})
 
   useEffect(() => {
-    console.log("effect")
     axios.get("https://api.frankfurter.app/currencies")
       .then(res => {
         const currObject = res.data
@@ -29,11 +28,6 @@ function QueryModal(props) {
 
 
   const getRates = (base, goal, rev) => {
-    if (rev) {
-      setReversed(true)
-    } else {
-      setReversed(false)
-    }
     const dateString = rateDate.toISOString().substring(0, 10)
     axios.get(`https://api.frankfurter.app/${dateString}?amount=1&from=${base}&to=${goal}`)
       .then(res => {
@@ -44,9 +38,11 @@ function QueryModal(props) {
         if (rev) {
           const reverseRate = "  1 ".concat(base, " = ", rate, " ", goal)
           setReverseRate(reverseRate)
+          setReversed(true)
         } else {
           const result = "  1 ".concat(base, " = ", rate, " ", goal)
           setResult(result)
+          setReversed(false)
         }
         props.showDetails(base, goal)
         const rateState = { date: dateString, base, goal, rate }
@@ -60,59 +56,59 @@ function QueryModal(props) {
   }
 
 
-    return (
-      <div>
-        <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={props.openModal} onRequestClose={props.hideModal} >
-          <h3> How much is the fish? </h3>
+  return (
+    <div>
+      <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={props.openModal} onRequestClose={props.hideModal} >
+        <h3> How much is the fish? </h3>
+        <div>
           <div>
-            <div>
-              <div className="inner">
-                <span>Select Base: </span>
-                <select className="dropdown-header" name="inputcurrency" autoFocus onChange={(e) => setMBase(e.target.value)}>
-                  <option>
-                    From
+            <div className="inner">
+              <span>Select Base: </span>
+              <select className="dropdown-header" name="inputcurrency" autoFocus onChange={(e) => setMBase(e.target.value)}>
+                <option>
+                  From
               </option>
-                  {Object.entries(currFull).map((pair) => (dropDown(pair[1], pair[0])))}
-                </select>
-              </div>
-              <div className="inner">
-                <DatePicker
-                  todayButton="Today"
-                  showYearDropdown 
-                  showMonthDropdown 
-                  selected={rateDate} onChange={date => setRateDate(date)}
-                  dateFormat="yyyy-MM-dd" />
-              </div>
+                {Object.entries(currFull).map((pair) => (dropDown(pair[1], pair[0])))}
+              </select>
             </div>
-            <br />
-            <span>Select Goal: </span>
-            <select className="dropdown-header" name="outputcurrency" autoFocus onChange={(e) => setMGoal(e.target.value)}>
-              <option>
-                To
-              </option>
-              {Object.entries(currFull).map((pair) => (dropDown(pair[1], pair[0])))}
-            </select>
-            <p><br /></p>
-            <div className=" result">{result ? (<p>{result}</p>) : (<p><br /></p>)}
-            </div>
-            <div>
-              <div className="inner">
-                <Button onClick={() => getRates(mBase, mGoal, false)}>Get Rate</Button>
-              </div>
-              <div className="inner">
-                <button className="btn btn-outline-dark" onClick={props.hideModal}>close</button>
-              </div>
-            </div>
-            <br />
-            <div>{result ? (
-              <p><Button onClick={() => getRates(mGoal, mBase, true)}>Reverse Rate</Button></p>) : (<p><br /></p>)}
-            </div>
-            <div className=" reversed">{reversed ? (<p>{reverseRate}</p>) : (<p><br /></p>)}
+            <div className="inner">
+              <DatePicker
+                todayButton="Today"
+                showYearDropdown
+                showMonthDropdown
+                selected={rateDate} onChange={date => setRateDate(date)}
+                dateFormat="yyyy-MM-dd" />
             </div>
           </div>
-        </Modal>
-      </div>
-    )
+          <br />
+          <span>Select Goal: </span>
+          <select className="dropdown-header" name="outputcurrency" autoFocus onChange={(e) => setMGoal(e.target.value)}>
+            <option>
+              To
+              </option>
+            {Object.entries(currFull).map((pair) => (dropDown(pair[1], pair[0])))}
+          </select>
+          <p><br /></p>
+          <div className=" result">{result ? (<p>{result}</p>) : (<p><br /></p>)}
+          </div>
+          <div>
+            <div className="inner">
+              <Button onClick={() => getRates(mBase, mGoal, false)}>Get Rate</Button>
+            </div>
+            <div className="inner">
+              <button className="btn btn-outline-dark" onClick={props.hideModal}>close</button>
+            </div>
+          </div>
+          <br />
+          <div>{result ? (
+            <p><Button onClick={() => getRates(mGoal, mBase, true)}>Reverse Rate</Button></p>) : (<p><br /></p>)}
+          </div>
+          <div className=" reversed">{reversed ? (<p>{reverseRate}</p>) : (<p><br /></p>)}
+          </div>
+        </div>
+      </Modal>
+    </div>
+  )
 };
 Modal.setAppElement('body');
 
