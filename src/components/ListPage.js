@@ -45,7 +45,7 @@ class ListPage extends React.Component {
         return (
           <tr key={value['id']}>
             <td>{value['date']}</td>
-            <td>{value['base']}</td>
+              <td>{value['base']}</td>
             <td>{value['goal']}</td>
             <td>{value['rate']}</td>
             {!this.state.details ? (<td><button onClick={() => this.showDetails(value['base'], value['goal'])}>filter</button></td>) : null}

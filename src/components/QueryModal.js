@@ -1,103 +1,78 @@
-import React from 'react';
-import Modal from 'react-modal';
-import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { connect } from 'react-redux';
-import { addRate } from '../actions/rates';
+import React, { useState, useEffect } from 'react'
+import Modal from 'react-modal'
+import axios from 'axios'
+import Button from 'react-bootstrap/Button'
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import { connect } from 'react-redux'
+import { addRate } from '../actions/rates'
 
-class QueryModal extends React.Component {
+function QueryModal(props) {
 
-  state = {
+  const [mBase, setMBase] = useState('')
+  const [mGoal, setMGoal] = useState('')
+  const [rateDate, setRateDate] = useState(new Date())
+  const [result, setResult] = useState('')
+  const [reversed, setReversed] = useState(false)
+  const [reverseRate, setReverseRate] = useState('')
+  const [currFull, setCurrFull] = useState({})
 
-    currencies: [],
-    currFull: {},
-    base: "",
-    goal: "",
-    rateDate: new Date(),
-    result: "",
-    reversed: false,
-    reverseRate: ""
-  }
-
-  componentDidMount = () => {
+  useEffect(() => {
+    console.log("effect")
     axios.get("https://api.frankfurter.app/currencies")
       .then(res => {
-        const currObject = res.data;
-        const currencies = [...Object.keys(currObject)];
-        this.setState({
-          currencies: currencies, currFull: currObject
-        });
+        const currObject = res.data
+        setCurrFull(currObject)
       })
-      .catch(err => console.log(err));
-  };
+      .catch(err => console.log(err))
+  }, [])
 
-  getRates = (base, goal) => {
-    const dateString = this.state.rateDate.toISOString().substring(0, 10);
+
+  const getRates = (base, goal, rev) => {
+    if (rev) {
+      setReversed(true)
+    } else {
+      setReversed(false)
+    }
+    const dateString = rateDate.toISOString().substring(0, 10)
     axios.get(`https://api.frankfurter.app/${dateString}?amount=1&from=${base}&to=${goal}`)
       .then(res => {
         const base = res.data.base
         const temp = res.data.rates
-        const rate = temp[Object.keys(temp)[0]];
-        const goal = Object.keys(temp)[0];
-        console.log(this.state.reversed);
-        if (this.state.reversed) {
-          const reverseRate = "  1 ".concat(base, " = ", rate, " ", goal);
-          this.setState({ reverseRate: reverseRate });
+        const rate = temp[Object.keys(temp)[0]]
+        const goal = Object.keys(temp)[0]
+        if (rev) {
+          const reverseRate = "  1 ".concat(base, " = ", rate, " ", goal)
+          setReverseRate(reverseRate)
         } else {
-          const result = "  1 ".concat(base, " = ", rate, " ", goal);
-          this.setState({ result: result });
+          const result = "  1 ".concat(base, " = ", rate, " ", goal)
+          setResult(result)
         }
-        this.props.showDetails(base, goal);
-        const rateState = { date: dateString, base, goal, rate };
-        this.props.dispatch(addRate(rateState));
+        props.showDetails(base, goal)
+        const rateState = { date: dateString, base, goal, rate }
+        props.dispatch(addRate(rateState))
       })
-      .catch(err => console.log(err));
-  };
+      .catch(err => console.log(err))
+  }
 
-  dropDown = (elem, index) => {
-    return <option key={index} value={index}>{elem}</option>;
-  };
-
-  handleChangeBase = (e) => {
-    this.setState({ base: e.target.value });
-  };
-
-  handleChangeGoal = (e) => {
-    this.setState({ goal: e.target.value });
-  };
-
-  setDate = (date) => {
-    this.setState({ rateDate: date });
-  };
-
-  exchange = (base, goal) => {
-    this.setState({ reversed: false });
-    this.getRates(base, goal);
-  };
-
-  getReverseOrder = (base, goal) => {
-    const temp = base;
-    this.setState({ base: goal, goal: temp, reversed: true });
-    this.getRates(goal, base);
-  };
+  const dropDown = (elem, index) => {
+    return <option key={index} value={index}>{elem}</option>
+  }
 
 
-  render() {
     return (
       <div>
-        <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={this.props.openModal} onRequestClose={this.props.hideModal} >
+        <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={props.openModal} onRequestClose={props.hideModal} >
           <h3> How much is the fish? </h3>
           <div>
             <div>
               <div className="inner">
                 <span>Select Base: </span>
-                <select className="dropdown-header" name="inputcurrency" autoFocus onChange={this.handleChangeBase}>
+                <select className="dropdown-header" name="inputcurrency" autoFocus onChange={(e) => setMBase(e.target.value)}>
                   <option>
                     From
               </option>
-                  {Object.entries(this.state.currFull).map((pair) => (this.dropDown(pair[1], pair[0])))}
+                  {Object.entries(currFull).map((pair) => (dropDown(pair[1], pair[0])))}
                 </select>
               </div>
               <div className="inner">
@@ -105,46 +80,45 @@ class QueryModal extends React.Component {
                   todayButton="Today"
                   showYearDropdown 
                   showMonthDropdown 
-                  selected={this.state.rateDate} onChange={this.setDate}
+                  selected={rateDate} onChange={date => setRateDate(date)}
                   dateFormat="yyyy-MM-dd" />
               </div>
             </div>
             <br />
             <span>Select Goal: </span>
-            <select className="dropdown-header" name="outputcurrency" autoFocus onChange={this.handleChangeGoal}>
+            <select className="dropdown-header" name="outputcurrency" autoFocus onChange={(e) => setMGoal(e.target.value)}>
               <option>
                 To
               </option>
-              {Object.entries(this.state.currFull).map((pair) => (this.dropDown(pair[1], pair[0])))}
+              {Object.entries(currFull).map((pair) => (dropDown(pair[1], pair[0])))}
             </select>
             <p><br /></p>
-            <div className=" result">{this.state.result ? (<p>{this.state.result}</p>) : (<p><br /></p>)}
+            <div className=" result">{result ? (<p>{result}</p>) : (<p><br /></p>)}
             </div>
             <div>
               <div className="inner">
-                <Button onClick={() => this.exchange(this.state.base, this.state.goal)}>Get Rate</Button>
+                <Button onClick={() => getRates(mBase, mGoal, false)}>Get Rate</Button>
               </div>
               <div className="inner">
-                <button className="btn btn-outline-dark" onClick={this.props.hideModal}>close</button>
+                <button className="btn btn-outline-dark" onClick={props.hideModal}>close</button>
               </div>
             </div>
             <br />
-            <div>{this.state.result ? (
-              <p><Button onClick={() => this.getReverseOrder(this.state.base, this.state.goal)}>Reverse Rate</Button></p>) : (<p><br /></p>)}
+            <div>{result ? (
+              <p><Button onClick={() => getRates(mGoal, mBase, true)}>Reverse Rate</Button></p>) : (<p><br /></p>)}
             </div>
-            <div className=" reversed">{this.state.reversed ? (<p>{this.state.reverseRate}</p>) : (<p><br /></p>)}
+            <div className=" reversed">{reversed ? (<p>{reverseRate}</p>) : (<p><br /></p>)}
             </div>
           </div>
         </Modal>
       </div>
-    );
-  }
+    )
 };
 Modal.setAppElement('body');
 
 const mapStateToProps = (state) => {
   return {
-    rates: state.rates,
+    rates: state.rates
   }
 };
 
