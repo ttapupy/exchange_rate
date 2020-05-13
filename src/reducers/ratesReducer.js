@@ -1,5 +1,5 @@
 
-const persistedState = (localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState'))['rates'] : []);
+const persistedState = (localStorage.getItem('reduxRates') ? JSON.parse(localStorage.getItem('reduxRates')) : []);
 
 const ratesReducer = (state = persistedState, action) => {
   switch (action.type) {

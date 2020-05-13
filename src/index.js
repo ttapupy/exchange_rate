@@ -12,8 +12,9 @@ import configureStore from './store/configureStore';
 const store = configureStore();
 
 store.subscribe(() => {
-  localStorage.setItem('reduxState', JSON.stringify(store.getState()));
+  localStorage.setItem('reduxRates', JSON.stringify(store.getState()['rates']));
 });
+console.log(store.getState()['rates'])
 
 const jsx = (
   <Provider store={store}>
