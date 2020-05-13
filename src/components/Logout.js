@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { login } from '../actions/user'
+import { logout } from '../actions/user'
 
 
 const Logout = (props) => {
 
     return (
       <div>
-        <p><button onClick={() => props.dispatch(login())} >Logout</button></p>
+        <p><button onClick={() => props.dispatch(logout())} >Logout</button></p>
       </div>
     );
   };

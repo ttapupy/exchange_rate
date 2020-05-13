@@ -54,10 +54,17 @@ function QueryModal(props) {
     return <option key={index} value={index}>{elem}</option>
   }
 
+  const closeModal = () => {
+    props.hideModal()
+    setResult('')
+    setReverseRate('')
+    setRateDate(new Date())
+  }
+
 
   return (
     <div>
-      <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={props.openModal} onRequestClose={props.hideModal} >
+      <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={props.openModal} onRequestClose={closeModal} >
         <h3> How much is the fish? </h3>
         <div>
           <div>
@@ -95,7 +102,7 @@ function QueryModal(props) {
               <Button onClick={() => getRates(mBase, mGoal, false)}>Get Rate</Button>
             </div>
             <div className="inner">
-              <button className="btn btn-outline-dark" onClick={props.hideModal}>close</button>
+              <button className="btn btn-outline-dark" onClick={closeModal}>close</button>
             </div>
           </div>
           <br />

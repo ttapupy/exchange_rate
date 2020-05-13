@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import QueryModal from './QueryModal'
 import Button from 'react-bootstrap/Button'
 import { connect } from 'react-redux'
@@ -49,7 +49,7 @@ function ListPage(props) {
       <main className="content">
         <div>
           New search:
-          <QueryModal openModal={openModal} hideModal={hideModal} 
+          <QueryModal openModal={openModal} hideModal={hideModal}
           />
           <Button type="button" onClick={() => newSearch()}>open</Button>
         </div>

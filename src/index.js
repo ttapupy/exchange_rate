@@ -13,10 +13,9 @@ const store = configureStore();
 
 store.subscribe(() => {
   localStorage.setItem('reduxRates', JSON.stringify(store.getState()['rates']));
-  console.log('filters', store.getState()['filters'])
 });
 
-console.log('store', store.getState())
+// console.log('store', store.getState())
 
 const jsx = (
   <Provider store={store}>

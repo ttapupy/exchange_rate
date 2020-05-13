@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { login } from '../actions/user'
+import { setPairFilter } from '../actions/filters'
 import '../App.css'
 
 
@@ -13,6 +14,7 @@ function Login(props) {
     e.preventDefault()
     const username = e.target.elements.username.value.trim()
     props.dispatch(login(username))
+    props.dispatch(setPairFilter('', '', false))
   }
 
   const handleUname = (e) => {
@@ -39,7 +41,7 @@ function Login(props) {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    details: state.details
+    filters: state.filters
   }
 };
 
