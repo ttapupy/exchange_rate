@@ -1,45 +1,46 @@
-import React from 'react';
-import '../App.css';
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { login } from '../actions/user'
+import '../App.css'
 
 
-class Login extends React.Component {
+function Login(props) {
  
-  state = {
-    unameError: true
+  const [unameError, setUnameError] = useState(true)
+
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+    const username = e.target.elements.username.value.trim()
+    props.dispatch(login(username))
   }
 
-  handleLogin = (e) => {
-    e.preventDefault();
-    const username = e.target.elements.username.value.trim();
-    localStorage.setItem('username', username);
-    this.props.onLogin(username);
-
-  };
-
-  handleUname = (e) => {
-    const name = e.target.value.trim().length;
-    this.setState(() => ({ unameError: name < 3 }));
-    return (name < 3);
+  const handleUname = (e) => {
+    const name = e.target.value.trim().length
+    setUnameError(name < 3 )
   }
-
-  render() {
 
     return (
       <div className="content">
         <p>Login</p> <br/>
         <div className="align-items-center justify-content-between mb-4">
-          <form onSubmit={this.handleLogin}>
+          <form onSubmit={handleLogin}>
             <input type="text" name="username" 
-              onChange={this.handleUname}
+              onChange={(e) => handleUname(e)}
             />
-            <button disabled={this.state.unameError} >Login</button>
+            <button id="signIn" disabled={unameError} >Login</button>
           </form>
         </div>
-
       </div>
-    );
+    )
+
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    details: state.details
   }
-}
+};
 
-
-export default Login;
+export default connect(mapStateToProps)(Login);

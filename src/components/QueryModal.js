@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { connect } from 'react-redux'
 import { addRate } from '../actions/rates'
+import { setPairFilter } from '../actions/filters'
 
 function QueryModal(props) {
 
@@ -43,8 +44,8 @@ function QueryModal(props) {
           setResult(result)
           setReversed(false)
         }
-        props.showDetails(base, goal)
         props.dispatch(addRate({ date: dateString, base, goal, rate }))
+        props.dispatch(setPairFilter(base, goal, true))
       })
       .catch(err => console.log(err))
   }
@@ -112,7 +113,8 @@ Modal.setAppElement('body');
 
 const mapStateToProps = (state) => {
   return {
-    rates: state.rates
+    rates: state.rates,
+    filters: state.filters
   }
 };
 

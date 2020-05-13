@@ -10,18 +10,7 @@ import { setPairFilter } from '../actions/filters'
 function ListPage(props) {
 
   const [openModal, setOpenModal] = useState(false)
-  const [details, setDetails] = useState(false)
 
-
-  const showDetails = (base, goal) => {
-    props.dispatch(setPairFilter(base, goal))
-    setDetails(true)
-  }
-
-  const hideDetails = () => {
-    props.dispatch(setPairFilter('', ''))
-    setDetails(false)
-  }
 
   const newSearch = () => {
     setOpenModal(true)
@@ -45,7 +34,7 @@ function ListPage(props) {
             <td>{value['base']}</td>
             <td>{value['goal']}</td>
             <td>{value['rate']}</td>
-            {!details ? (<td><button onClick={() => showDetails(value['base'], value['goal'])}>filter</button></td>) : null}
+            {!props.filters.details ? (<td><button onClick={() => props.dispatch(setPairFilter(value['base'], value['goal'], true))}>filter</button></td>) : null}
             <td><button onClick={() => removeEntry(value)}>delete</button></td>
           </tr>
         )
@@ -54,13 +43,13 @@ function ListPage(props) {
 
 
 
-  const prev = details ? "History" : "Previous Queries"
+  const prev = props.filters.details ? "History" : "Previous Queries"
   return (
     <div>
       <main className="content">
         <div>
           New search:
-          <QueryModal openModal={openModal} hideModal={hideModal} showDetails={showDetails} details={details}
+          <QueryModal openModal={openModal} hideModal={hideModal} 
           />
           <Button type="button" onClick={() => newSearch()}>open</Button>
         </div>
@@ -69,7 +58,7 @@ function ListPage(props) {
         <div className="table-responsive">
           <div>
             <h1 className="inner">{prev}</h1>
-            <div className="inner">{details ? (<button onClick={() => hideDetails()} className="button bg-info">Back to all queries</button>) : null}</div>
+            <div className="inner">{props.filters.details ? (<button onClick={() => props.dispatch(setPairFilter('', '', false))} className="button bg-info">Back to all queries</button>) : null}</div>
           </div>
           <table className="table table-bordered">
             <thead>
@@ -78,7 +67,7 @@ function ListPage(props) {
                 <th>From</th>
                 <th>To</th>
                 <th>Rate</th>
-                {!details ? (<th>Filter Pair</th>) : null}
+                {!props.filters.details ? (<th>Filter Pair</th>) : null}
                 <th>Delete</th>
               </tr>
             </thead>

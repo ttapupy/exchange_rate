@@ -1,12 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { login } from '../actions/user'
+
 
 const Logout = (props) => {
 
     return (
       <div>
-        <p><button onClick={props.userout} >Logout</button></p>
+        <p><button onClick={() => props.dispatch(login())} >Logout</button></p>
       </div>
     );
-  }
+  };
 
-export default Logout;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+export default connect(mapStateToProps)(Logout);
