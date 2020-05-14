@@ -14,7 +14,7 @@ function RenderTable(props) {
           <td>{value['base']}</td>
           <td>{value['goal']}</td>
           <td>{value['rate']}</td>
-          {!props.filters.details ? (<td><button onClick={() => props.dispatch(setPairFilter(value['base'], value['goal'], true))}>filter</button></td>) : null}
+          {!props.filters.details ? (<td><button onClick={() => props.dispatch(setPairFilter(value['base'], value['goal'], true))}>show chart</button></td>) : null}
           <td><button onClick={() => props.dispatch(removeRate(value))}>delete</button></td>
         </tr>
       )
