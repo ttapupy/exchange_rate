@@ -52,16 +52,20 @@
   border-style: hidden;
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-right: 20px;
-  margin-left: 20px;
+  margin-right: 100px;
+  margin-left: 40px;
   padding-top: 30px;
-  padding-right: 50px;
+  padding-right: 100px;
   padding-bottom: 50px;
-  padding-left: 30px;
+  padding-left: 100px;
+}
+
+.content.header {
+  margin-right: 400px;
 }
 
 .content.modalis {
-  border: 1px solid rgb(113, 121, 104);;
+  border: 1px solid rgb(150, 156, 143);
   border-radius: 40px;
 }
 
@@ -79,7 +83,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(113, 121, 104);
+  background-color: rgb(150, 156, 143);
 }
 
 .result {
@@ -87,3 +91,30 @@
   font-size: 1.25em;
 
 } 
+
+ .inlineTable {
+  float: left;
+  border-style: hidden;
+  padding-right: 20px;
+  margin-right: 20px;
+  padding-left: 20px;
+  margin-left: 20px;
+  background-color: #fff;
+}
+
+.table-body {
+  display: table;
+  width:100%;
+  display: table-header-group;
+  font-weight: bold;
+  border-collapse: separate;
+  background-color: #fdfdfe;
+}
+
+.table-body tr:hover {
+  color: rgb(199, 101, 101);
+}
+
+th, td {
+  border-bottom: 1px solid rgb(164, 174, 180);
+}

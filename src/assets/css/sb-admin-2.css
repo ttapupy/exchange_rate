@@ -66,7 +66,7 @@ body {
   line-height: 1.5;
   color: #858796;
   text-align: left;
-  background-color: #fff;
+  background-color: #f1faee;
 }
 
 [tabindex="-1"]:focus {
@@ -1369,6 +1369,9 @@ pre code {
   width: 100%;
   margin-bottom: 1rem;
   color: #858796;
+  table-layout: fixed;
+  width: 100%;
+  max-width: 900px;
 }
 
 .table th,
@@ -1394,6 +1397,9 @@ pre code {
 
 .table-bordered {
   border: 1px solid #e3e6f0;
+  /* table-layout: fixed; */
+  width: 100%;
+  max-width: 900px;
 }
 
 .table-bordered th,
@@ -1665,6 +1671,7 @@ pre code {
   .table-responsive-md {
     display: block;
     width: 100%;
+    table-layout: fixed;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -1700,6 +1707,7 @@ pre code {
 .table-responsive {
   display: block;
   width: 100%;
+  table-layout: fixed;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -5643,7 +5651,7 @@ a.close.disabled {
 @media (min-width: 992px) {
   .modal-lg,
   .modal-xl {
-    max-width: 800px;
+    max-width: 900px;
   }
 }
 
@@ -9528,6 +9536,9 @@ a.text-dark:hover, a.text-dark:focus {
   }
   .table {
     border-collapse: collapse !important;
+    table-layout: fixed;
+    width: 100%;
+    max-width: 900px;
   }
   .table td,
   .table th {

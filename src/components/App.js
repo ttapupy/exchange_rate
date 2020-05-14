@@ -38,7 +38,8 @@ const mapStateToProps = (state) => {
   return {
     rates: state.rates,
     filters: state.filters,
-    user: state.user
+    user: state.user,
+    modal: state.modal
   }
 };
 

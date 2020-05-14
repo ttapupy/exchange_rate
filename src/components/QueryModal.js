@@ -7,6 +7,8 @@ import "react-datepicker/dist/react-datepicker.css"
 import { connect } from 'react-redux'
 import { addRate } from '../actions/rates'
 import { setPairFilter } from '../actions/filters'
+import { setModal } from '../actions/modal'
+
 
 function QueryModal(props) {
 
@@ -55,7 +57,7 @@ function QueryModal(props) {
   }
 
   const closeModal = () => {
-    props.hideModal()
+    props.dispatch(setModal(false))
     setResult('')
     setReverseRate('')
     setRateDate(new Date())
@@ -64,7 +66,7 @@ function QueryModal(props) {
 
   return (
     <div>
-      <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={props.openModal} onRequestClose={closeModal} >
+      <Modal className=" content modalis mymodal" overlayClassName="myoverlay" isOpen={props.modal.openModal} onRequestClose={closeModal} >
         <h3> How much is the fish? </h3>
         <div>
           <div>
@@ -121,7 +123,8 @@ Modal.setAppElement('body');
 const mapStateToProps = (state) => {
   return {
     rates: state.rates,
-    filters: state.filters
+    filters: state.filters,
+    modal: state.modal
   }
 };
 
