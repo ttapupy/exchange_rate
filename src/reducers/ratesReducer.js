@@ -10,9 +10,12 @@ let persistedState = (function () {
 const ratesReducer = (state = persistedState, action) => {
   switch (action.type) {
     case 'ADD_RATE':
-      return [...state, action.rate];
+      return [...state, action.rates];
+    case 'FETCH_RATE':
+      return state;  
     case 'REMOVE_RATE':
       return state.filter(({ id }) => id !== action.id);
+    case 'FETCH_RATE_ERROR':  
     default:
       return state;
   }

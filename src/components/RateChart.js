@@ -8,7 +8,6 @@ function RateChart(props) {
   const calculate = () => {
 
     const filteredData = selectedRates(props.rates, props.filters)
-    console.log('filteredData', filteredData)
     let [baseChart, goalChart] = ['', '']
     baseChart = filteredData[0]['base']
     goalChart = filteredData[0]['goal']
@@ -21,7 +20,7 @@ function RateChart(props) {
 
     return (
       [{
-        label: `${baseChart} \ ${goalChart}`,
+        label: `${baseChart} -> ${goalChart}`,
         data: data
       }]
     )

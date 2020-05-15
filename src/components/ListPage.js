@@ -3,14 +3,27 @@ import QueryModal from './QueryModal'
 import Button from 'react-bootstrap/Button'
 import { connect } from 'react-redux'
 import { setModal } from '../actions/modal'
+import { setMBase } from '../actions/modal'
+import { setMGoal } from '../actions/modal'
+import { setResult } from '../actions/modal'
+import { setReverseRate } from '../actions/modal'
 import { setPairFilter } from '../actions/filters'
 import { setBaseFilter } from '../actions/filters'
 import { setGoalFilter } from '../actions/filters'
 import selectedRates from '../selectors/selectedRates'
 import RenderTable from './RenderTable'
 import RateChart from './RateChart'
+import '../App.css'
 
 function ListPage(props) {
+
+  const openModal = () => {
+    props.dispatch(setModal(true))
+    props.dispatch(setMBase(''))
+    props.dispatch(setMGoal(''))
+    props.dispatch(setResult(''))
+    props.dispatch(setReverseRate(''))
+  }
 
   const columnFilter = (list, direction) => {
     if (!list) {
@@ -18,7 +31,7 @@ function ListPage(props) {
     }
     const elems = list.map((elem) => elem[direction]).filter((a, index, b) => b.indexOf(a) === index)
     return (
-      elems.map((elem, index) => <option key={elem} value={elem}>{elem}</option>)
+      elems.sort().map((elem) => <option key={elem} value={elem}>{elem}</option>)
       )
   }
 
@@ -30,7 +43,7 @@ function ListPage(props) {
         <h6>
           <p className="text-danger">New search: </p>
           <QueryModal />
-          <Button type="button" onClick={() => props.dispatch(setModal(true))}>open</Button>
+          <Button type="button" onClick={openModal}>open</Button>
         </h6>
 
         <br />

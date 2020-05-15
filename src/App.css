@@ -45,7 +45,13 @@
   bottom: 40px;
   width:40%;
   height: 60%;
-  background-color: papayawhip;
+  color: rgb(42, 77, 153);
+  font-weight: 500;
+  background-color: #fff;
+  border: 2px solid rgb(61, 87, 128);
+  border-radius: 40px;
+  margin: 20px;
+  padding: 20px;
 }
 
 .content {
@@ -64,17 +70,17 @@
   margin-right: 400px;
 }
 
-.content.modalis {
-  border: 1px solid rgb(150, 156, 143);
-  border-radius: 40px;
-}
 
 .inner {
   display: inline-block;
   border-style: hidden;
   padding-right: 40px;
   margin-right: 40px;
+  margin-top: 10px;
+}
 
+.warning {
+  color: #806520;
 }
 
 .myoverlay {
@@ -83,7 +89,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(150, 156, 143);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  -moz-backdrop-filter: blur(8px);
 }
 
 .result {

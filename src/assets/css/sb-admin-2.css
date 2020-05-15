@@ -6242,7 +6242,7 @@ button.bg-success:focus {
 }
 
 .bg-info {
-  background-color: #2a74a5 !important;
+  background-color: #24418f !important;
   color: white;
   float: right;
 }
@@ -6250,7 +6250,7 @@ button.bg-success:focus {
 a.bg-info:hover, a.bg-info:focus,
 button.bg-info:hover,
 button.bg-info:focus {
-  background-color: #2a74a5 !important;
+  background-color: #2a5fa5 !important;
 }
 
 .bg-warning {
