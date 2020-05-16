@@ -27,7 +27,8 @@ function QueryModal(props) {
 
 
   const getRates = (base, goal, rev) => {
-    if (!base || !goal || base === goal) {
+    console.log('rateDate', rateDate)
+    if (!base || !goal || base === goal || rateDate > new Date() ) {
       setError('Wrong query!')
       props.dispatch(setResult(''))
       props.dispatch(setReverseRate(''))
